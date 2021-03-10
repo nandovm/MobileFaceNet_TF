@@ -236,7 +236,7 @@ def mobilenet_v2(inputs,
 
   return logits, end_points
 
-mobilenet_v2.default_image_size = 112
+mobilenet_v2.default_image_size = 72
 
 
 def wrapped_partial(func, *args, **kwargs):

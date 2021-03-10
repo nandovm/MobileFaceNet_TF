@@ -27,7 +27,7 @@ slim = tf.contrib.slim
 def get_parser():
     parser = argparse.ArgumentParser(description='parameters to train net')
     parser.add_argument('--max_epoch', default=12, help='epoch to train the network')
-    parser.add_argument('--image_size', default=[112, 112], help='the image size')
+    parser.add_argument('--image_size', default=[72, 112], help='the image size')
     parser.add_argument('--class_number', type=int, required=True,
                         help='class number depend on your training datasets, MS1M-V1: 85164, MS1M-V2: 85742')
     parser.add_argument('--embedding_size', type=int,
@@ -42,7 +42,7 @@ def get_parser():
     parser.add_argument('--eval_db_path', default='./datasets/faces_ms1m_112x112', help='evluate datasets base path')
     parser.add_argument('--eval_nrof_folds', type=int,
                         help='Number of folds to use for cross validation. Mainly used for testing.', default=10)
-    parser.add_argument('--tfrecords_file_path', default='./datasets/faces_ms1m_112x112/tfrecords', type=str,
+    parser.add_argument('--tfrecords_file_path', default='./datasets/faces_ms1m_72x112/tfrecords', type=str,
                         help='path to the output of tfrecords file path')
     parser.add_argument('--summary_path', default='./output/summary', help='the summary file save path')
     parser.add_argument('--ckpt_path', default='./output/ckpt', help='the ckpt file save path')

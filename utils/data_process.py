@@ -53,7 +53,7 @@ def parse_function(example_proto):
     features = tf.parse_single_example(example_proto, features)
     # You can do more image distortion here for training data
     img = tf.image.decode_jpeg(features['image_raw'])
-    img = tf.reshape(img, shape=(112, 112, 3))
+    img = tf.reshape(img, shape=(72, 112, 3))
 
     #img = tf.py_func(random_rotate_image, [img], tf.uint8)
     img = tf.cast(img, dtype=tf.float32)
@@ -94,6 +94,7 @@ def load_bin(db_name, image_size, args):
     for i in range(len(issame_list)*2):
         _bin = bins[i]
         img = mx.image.imdecode(_bin).asnumpy()
+        cv2.imshow('prueba', img)
         #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         for flip in [0,1]:
             if flip == 1:
@@ -112,12 +113,28 @@ def load_data(db_name, image_size, args):
 
     for i in range(len(issame_list)*2):
         _bin = bins[i]
+
+        decoded = cv2.imdecode(np.frombuffer(_bin, np.uint8), -1)
+        height, width, ch = decoded.shape
+        # Cut the image in half
+        height_cutoff = int((height / 2) * 1.3)
+        s1 = decoded[:height_cutoff, :, :]
+        #s1 = cv2.copyMakeBorder(s1, 0, 40, 0, 0, borderType=cv2.BORDER_CONSTANT)
+        retvalue, buffer = cv2.imencode('.jpeg', s1)
+        _bin = buffer.tobytes()
+
+        nparr = np.fromstring(_bin, np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        cv2.imshow('test', frame)
+
         img = mx.image.imdecode(_bin).asnumpy()
         # img = cv2.imdecode(np.fromstring(_bin, np.uint8), -1)
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)+
+
         img = img - 127.5
         img = img * 0.0078125
+
         datasets[i, ...] = img
         i += 1
         if i % 1000 == 0:

@@ -102,3 +102,9 @@ ENV/
 
 datasets
 output
+
+#Intellij_IDEA
+.idea
+
+#MACOS
+.DS_Store
